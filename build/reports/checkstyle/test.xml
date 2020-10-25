@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<checkstyle version="8.27">
+<file name="/Users/PeristHuang/github/halo/src/test/java/run/halo/app/aspect/DisableOnConditionAspectTest.java">
+</file>
+<file name="/Users/PeristHuang/github/halo/src/test/java/run/halo/app/aspect/SensitiveConcealAspectTest.java">
+</file>
+<file name="/Users/PeristHuang/github/halo/src/test/java/run/halo/app/cache/CacheStoreTest.java">
+</file>
+<file name="/Users/PeristHuang/github/halo/src/test/java/run/halo/app/cache/InMemoryCacheStoreTest.java">
+</file>
+<file name="/Users/PeristHuang/github/halo/src/test/java/run/halo/app/conf/AntPathMatcherTest.java">
+</file>
+<file name="/Users/PeristHuang/github/halo/src/test/java/run/halo/app/controller/DisableOnConditionController.java">
+</file>
+<file name="/Users/PeristHuang/github/halo/src/test/java/run/halo/app/handler/theme/YamlThemePropertyResolverTest.java">
+</file>
+<file name="/Users/PeristHuang/github/halo/src/test/java/run/halo/app/model/MediaTypeTest.java">
+</file>
+<file name="/Users/PeristHuang/github/halo/src/test/java/run/halo/app/model/dto/base/InputConverterTest.java">
+</file>
+<file name="/Users/PeristHuang/github/halo/src/test/java/run/halo/app/model/dto/base/OutputConverterTest.java">
+</file>
+<file name="/Users/PeristHuang/github/halo/src/test/java/run/halo/app/model/enums/AttachmentTypeTest.java">
+</file>
+<file name="/Users/PeristHuang/github/halo/src/test/java/run/halo/app/model/enums/DataTypeTest.java">
+</file>
+<file name="/Users/PeristHuang/github/halo/src/test/java/run/halo/app/model/params/InstallParamTest.java">
+</file>
+<file name="/Users/PeristHuang/github/halo/src/test/java/run/halo/app/model/properties/PropertyEnumTest.java">
+</file>
+<file name="/Users/PeristHuang/github/halo/src/test/java/run/halo/app/repository/SheetRepositoryTest.java">
+</file>
+<file name="/Users/PeristHuang/github/halo/src/test/java/run/halo/app/security/OneTimeTokenTest.java">
+</file>
+<file name="/Users/PeristHuang/github/halo/src/test/java/run/halo/app/service/RecoveryServiceTest.java">
+</file>
+<file name="/Users/PeristHuang/github/halo/src/test/java/run/halo/app/service/impl/OptionServiceImplTest.java">
+</file>
+<file name="/Users/PeristHuang/github/halo/src/test/java/run/halo/app/service/impl/PostServiceImplTest.java">
+</file>
+<file name="/Users/PeristHuang/github/halo/src/test/java/run/halo/app/service/impl/ThemeServiceImplTest.java">
+</file>
+<file name="/Users/PeristHuang/github/halo/src/test/java/run/halo/app/service/support/HaloMediaTypeTest.java">
+</file>
+<file name="/Users/PeristHuang/github/halo/src/test/java/run/halo/app/utils/BcryptTest.java">
+</file>
+<file name="/Users/PeristHuang/github/halo/src/test/java/run/halo/app/utils/BeanUtilsTest.java">
+</file>
+<file name="/Users/PeristHuang/github/halo/src/test/java/run/halo/app/utils/DateTimeUtilsTest.java">
+</file>
+<file name="/Users/PeristHuang/github/halo/src/test/java/run/halo/app/utils/DirectoryAttackTest.java">
+</file>
+<file name="/Users/PeristHuang/github/halo/src/test/java/run/halo/app/utils/FileUtilsTest.java">
+</file>
+<file name="/Users/PeristHuang/github/halo/src/test/java/run/halo/app/utils/FilenameUtilsTest.java">
+</file>
+<file name="/Users/PeristHuang/github/halo/src/test/java/run/halo/app/utils/GitTest.java">
+</file>
+<file name="/Users/PeristHuang/github/halo/src/test/java/run/halo/app/utils/GithubTest.java">
+</file>
+<file name="/Users/PeristHuang/github/halo/src/test/java/run/halo/app/utils/GithubUtilsTest.java">
+</file>
+<file name="/Users/PeristHuang/github/halo/src/test/java/run/halo/app/utils/HaloUtilsTest.java">
+</file>
+<file name="/Users/PeristHuang/github/halo/src/test/java/run/halo/app/utils/HttpClientUtilsTest.java">
+</file>
+<file name="/Users/PeristHuang/github/halo/src/test/java/run/halo/app/utils/InetAddressTest.java">
+</file>
+<file name="/Users/PeristHuang/github/halo/src/test/java/run/halo/app/utils/JsonUtilsTest.java">
+</file>
+<file name="/Users/PeristHuang/github/halo/src/test/java/run/halo/app/utils/LocalDateTimeTest.java">
+</file>
+<file name="/Users/PeristHuang/github/halo/src/test/java/run/halo/app/utils/MarkdownUtilsTest.java">
+</file>
+<file name="/Users/PeristHuang/github/halo/src/test/java/run/halo/app/utils/PathTest.java">
+</file>
+<file name="/Users/PeristHuang/github/halo/src/test/java/run/halo/app/utils/PathsTest.java">
+</file>
+<file name="/Users/PeristHuang/github/halo/src/test/java/run/halo/app/utils/ReflectionUtilsTest.java">
+</file>
+<file name="/Users/PeristHuang/github/halo/src/test/java/run/halo/app/utils/SlugUtilsTest.java">
+</file>
+<file name="/Users/PeristHuang/github/halo/src/test/java/run/halo/app/utils/TimeUnitTest.java">
+</file>
+<file name="/Users/PeristHuang/github/halo/src/test/java/run/halo/app/utils/TwoFactorAuthUtilsTest.java">
+</file>
+<file name="/Users/PeristHuang/github/halo/src/test/java/run/halo/app/utils/URITest.java">
+</file>
+<file name="/Users/PeristHuang/github/halo/src/test/java/run/halo/app/utils/ValidationUtilsTest.java">
+</file>
+<file name="/Users/PeristHuang/github/halo/src/test/java/run/halo/app/utils/VersionTest.java">
+</file>
+<file name="/Users/PeristHuang/github/halo/src/test/java/run/halo/app/utils/VersionUtilTest.java">
+</file>
+<file name="/Users/PeristHuang/github/halo/src/test/java/run/halo/app/utils/YamlTest.java">
+</file>
+</checkstyle>
