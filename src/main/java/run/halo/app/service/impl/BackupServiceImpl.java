@@ -163,7 +163,6 @@ public class BackupServiceImpl implements BackupService {
     private final HaloProperties haloProperties;
 
     private final ApplicationEventPublisher eventPublisher;
-    private static final ExecutorService EXECUTOR_SERVICE = Executors.newFixedThreadPool(1);
 
     public BackupServiceImpl(AttachmentService attachmentService, CategoryService categoryService, CommentBlackListService commentBlackListService, JournalService journalService, JournalCommentService journalCommentService, LinkService linkService, LogService logService, MenuService menuService, OptionService optionService, PhotoService photoService, PostService postService, PostCategoryService postCategoryService, PostCommentService postCommentService, PostMetaService postMetaService, PostTagService postTagService, SheetService sheetService, SheetCommentService sheetCommentService, SheetMetaService sheetMetaService, TagService tagService, ThemeSettingService themeSettingService, UserService userService, OneTimeTokenService oneTimeTokenService, HaloProperties haloProperties, ApplicationEventPublisher eventPublisher) {
         this.attachmentService = attachmentService;
@@ -405,82 +404,75 @@ public class BackupServiceImpl implements BackupService {
 
     @Override
     public void importData(MultipartFile file) throws IOException {
-        EXECUTOR_SERVICE.submit(() -> {
-            try {
-                String jsonContent = IoUtil.read(file.getInputStream(), StandardCharsets.UTF_8);
+        String jsonContent = IoUtil.read(file.getInputStream(), StandardCharsets.UTF_8);
 
-                ObjectMapper mapper = JsonUtils.createDefaultJsonMapper();
-                TypeReference<HashMap<String, Object>> typeRef = new TypeReference<HashMap<String, Object>>() {
-                };
-                HashMap<String, Object> data = mapper.readValue(jsonContent, typeRef);
+        ObjectMapper mapper = JsonUtils.createDefaultJsonMapper();
+        TypeReference<HashMap<String, Object>> typeRef = new TypeReference<HashMap<String, Object>>() {
+        };
+        HashMap<String, Object> data = mapper.readValue(jsonContent, typeRef);
 
-                List<Attachment> attachments = Arrays.asList(mapper.readValue(mapper.writeValueAsString(data.get("attachments")), Attachment[].class));
-                attachmentService.createInBatch(attachments);
+        List<Attachment> attachments = Arrays.asList(mapper.readValue(mapper.writeValueAsString(data.get("attachments")), Attachment[].class));
+        attachmentService.createInBatch(attachments);
 
-                List<Category> categories = Arrays.asList(mapper.readValue(mapper.writeValueAsString(data.get("categories")), Category[].class));
-                categoryService.createInBatch(categories);
+        List<Category> categories = Arrays.asList(mapper.readValue(mapper.writeValueAsString(data.get("categories")), Category[].class));
+        categoryService.createInBatch(categories);
 
-                List<Tag> tags = Arrays.asList(mapper.readValue(mapper.writeValueAsString(data.get("tags")), Tag[].class));
-                tagService.createInBatch(tags);
+        List<Tag> tags = Arrays.asList(mapper.readValue(mapper.writeValueAsString(data.get("tags")), Tag[].class));
+        tagService.createInBatch(tags);
 
-                List<CommentBlackList> commentBlackList = Arrays.asList(mapper.readValue(mapper.writeValueAsString(data.get("comment_black_list")), CommentBlackList[].class));
-                commentBlackListService.createInBatch(commentBlackList);
+        List<CommentBlackList> commentBlackList = Arrays.asList(mapper.readValue(mapper.writeValueAsString(data.get("comment_black_list")), CommentBlackList[].class));
+        commentBlackListService.createInBatch(commentBlackList);
 
-                List<Journal> journals = Arrays.asList(mapper.readValue(mapper.writeValueAsString(data.get("journals")), Journal[].class));
-                journalService.createInBatch(journals);
+        List<Journal> journals = Arrays.asList(mapper.readValue(mapper.writeValueAsString(data.get("journals")), Journal[].class));
+        journalService.createInBatch(journals);
 
-                List<JournalComment> journalComments = Arrays.asList(mapper.readValue(mapper.writeValueAsString(data.get("journal_comments")), JournalComment[].class));
-                journalCommentService.createInBatch(journalComments);
+        List<JournalComment> journalComments = Arrays.asList(mapper.readValue(mapper.writeValueAsString(data.get("journal_comments")), JournalComment[].class));
+        journalCommentService.createInBatch(journalComments);
 
-                List<Link> links = Arrays.asList(mapper.readValue(mapper.writeValueAsString(data.get("links")), Link[].class));
-                linkService.createInBatch(links);
+        List<Link> links = Arrays.asList(mapper.readValue(mapper.writeValueAsString(data.get("links")), Link[].class));
+        linkService.createInBatch(links);
 
-                List<Log> logs = Arrays.asList(mapper.readValue(mapper.writeValueAsString(data.get("logs")), Log[].class));
-                logService.createInBatch(logs);
+        List<Log> logs = Arrays.asList(mapper.readValue(mapper.writeValueAsString(data.get("logs")), Log[].class));
+        logService.createInBatch(logs);
 
-                List<Menu> menus = Arrays.asList(mapper.readValue(mapper.writeValueAsString(data.get("menus")), Menu[].class));
-                menuService.createInBatch(menus);
+        List<Menu> menus = Arrays.asList(mapper.readValue(mapper.writeValueAsString(data.get("menus")), Menu[].class));
+        menuService.createInBatch(menus);
 
-                List<Option> options = Arrays.asList(mapper.readValue(mapper.writeValueAsString(data.get("options")), Option[].class));
-                optionService.createInBatch(options);
+        List<Option> options = Arrays.asList(mapper.readValue(mapper.writeValueAsString(data.get("options")), Option[].class));
+        optionService.createInBatch(options);
 
-                eventPublisher.publishEvent(new OptionUpdatedEvent(this));
+        eventPublisher.publishEvent(new OptionUpdatedEvent(this));
 
-                List<Photo> photos = Arrays.asList(mapper.readValue(mapper.writeValueAsString(data.get("photos")), Photo[].class));
-                photoService.createInBatch(photos);
+        List<Photo> photos = Arrays.asList(mapper.readValue(mapper.writeValueAsString(data.get("photos")), Photo[].class));
+        photoService.createInBatch(photos);
 
-                List<Post> posts = Arrays.asList(mapper.readValue(mapper.writeValueAsString(data.get("posts")), Post[].class));
-                postService.createInBatch(posts);
+        List<Post> posts = Arrays.asList(mapper.readValue(mapper.writeValueAsString(data.get("posts")), Post[].class));
+        postService.createInBatch(posts);
 
-                List<PostCategory> postCategories = Arrays.asList(mapper.readValue(mapper.writeValueAsString(data.get("post_categories")), PostCategory[].class));
-                postCategoryService.createInBatch(postCategories);
+        List<PostCategory> postCategories = Arrays.asList(mapper.readValue(mapper.writeValueAsString(data.get("post_categories")), PostCategory[].class));
+        postCategoryService.createInBatch(postCategories);
 
-                List<PostComment> postComments = Arrays.asList(mapper.readValue(mapper.writeValueAsString(data.get("post_comments")), PostComment[].class));
-                postCommentService.createInBatch(postComments);
+        List<PostComment> postComments = Arrays.asList(mapper.readValue(mapper.writeValueAsString(data.get("post_comments")), PostComment[].class));
+        postCommentService.createInBatch(postComments);
 
-                List<PostMeta> postMetas = Arrays.asList(mapper.readValue(mapper.writeValueAsString(data.get("post_metas")), PostMeta[].class));
-                postMetaService.createInBatch(postMetas);
+        List<PostMeta> postMetas = Arrays.asList(mapper.readValue(mapper.writeValueAsString(data.get("post_metas")), PostMeta[].class));
+        postMetaService.createInBatch(postMetas);
 
-                List<PostTag> postTags = Arrays.asList(mapper.readValue(mapper.writeValueAsString(data.get("post_tags")), PostTag[].class));
-                postTagService.createInBatch(postTags);
+        List<PostTag> postTags = Arrays.asList(mapper.readValue(mapper.writeValueAsString(data.get("post_tags")), PostTag[].class));
+        postTagService.createInBatch(postTags);
 
-                List<Sheet> sheets = Arrays.asList(mapper.readValue(mapper.writeValueAsString(data.get("sheets")), Sheet[].class));
-                sheetService.createInBatch(sheets);
+        List<Sheet> sheets = Arrays.asList(mapper.readValue(mapper.writeValueAsString(data.get("sheets")), Sheet[].class));
+        sheetService.createInBatch(sheets);
 
-                List<SheetComment> sheetComments = Arrays.asList(mapper.readValue(mapper.writeValueAsString(data.get("sheet_comments")), SheetComment[].class));
-                sheetCommentService.createInBatch(sheetComments);
+        List<SheetComment> sheetComments = Arrays.asList(mapper.readValue(mapper.writeValueAsString(data.get("sheet_comments")), SheetComment[].class));
+        sheetCommentService.createInBatch(sheetComments);
 
-                List<SheetMeta> sheetMetas = Arrays.asList(mapper.readValue(mapper.writeValueAsString(data.get("sheet_metas")), SheetMeta[].class));
-                sheetMetaService.createInBatch(sheetMetas);
+        List<SheetMeta> sheetMetas = Arrays.asList(mapper.readValue(mapper.writeValueAsString(data.get("sheet_metas")), SheetMeta[].class));
+        sheetMetaService.createInBatch(sheetMetas);
 
-                List<ThemeSetting> themeSettings = Arrays.asList(mapper.readValue(mapper.writeValueAsString(data.get("theme_settings")), ThemeSetting[].class));
-                themeSettingService.createInBatch(themeSettings);
-                eventPublisher.publishEvent(new ThemeUpdatedEvent(this));
-
-            } catch (IOException e) {
-                log.error("import error", e);
-            }
-        });
+        List<ThemeSetting> themeSettings = Arrays.asList(mapper.readValue(mapper.writeValueAsString(data.get("theme_settings")), ThemeSetting[].class));
+        themeSettingService.createInBatch(themeSettings);
+        eventPublisher.publishEvent(new ThemeUpdatedEvent(this));
 
     }
 

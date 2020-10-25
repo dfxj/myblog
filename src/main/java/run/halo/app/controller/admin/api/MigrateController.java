@@ -12,6 +12,9 @@ import run.halo.app.model.properties.PrimaryProperties;
 import run.halo.app.service.MigrateService;
 import run.halo.app.service.OptionService;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 /**
  * Migrate controller
  *
@@ -25,6 +28,7 @@ public class MigrateController {
     private final MigrateService migrateService;
 
     private final OptionService optionService;
+    private static final ExecutorService EXECUTOR_SERVICE = Executors.newFixedThreadPool(2);
 
     public MigrateController(MigrateService migrateService,
             OptionService optionService) {
@@ -38,7 +42,9 @@ public class MigrateController {
         if (optionService.getByPropertyOrDefault(PrimaryProperties.IS_INSTALLED, Boolean.class, false)) {
             throw new BadRequestException("无法在博客初始化完成之后迁移数据");
         }
-        migrateService.migrate(file, MigrateType.HALO);
+        EXECUTOR_SERVICE.submit(() -> {
+            migrateService.migrate(file, MigrateType.HALO);
+        });
     }
 
     //    @PostMapping("wordpress")
