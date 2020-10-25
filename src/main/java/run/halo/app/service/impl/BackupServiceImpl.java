@@ -475,13 +475,13 @@ public class BackupServiceImpl implements BackupService {
 
                 List<ThemeSetting> themeSettings = Arrays.asList(mapper.readValue(mapper.writeValueAsString(data.get("theme_settings")), ThemeSetting[].class));
                 themeSettingService.createInBatch(themeSettings);
+                eventPublisher.publishEvent(new ThemeUpdatedEvent(this));
+
             } catch (IOException e) {
                 log.error("import error", e);
             }
         });
 
-
-        eventPublisher.publishEvent(new ThemeUpdatedEvent(this));
     }
 
     /**
