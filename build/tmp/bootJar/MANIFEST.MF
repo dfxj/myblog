@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Spring-Boot-Classpath-Index: BOOT-INF/classpath.idx
 Implementation-Title: Halo Application
-Implementation-Version: 1.4.2
+Implementation-Version: 1.4.3
 Start-Class: run.halo.app.Application
 Spring-Boot-Classes: BOOT-INF/classes/
 Spring-Boot-Lib: BOOT-INF/lib/

@@ -811,8 +811,6 @@
 <file name="/Users/PeristHuang/github/halo/src/main/java/run/halo/app/service/impl/AttachmentServiceImpl.java">
 </file>
 <file name="/Users/PeristHuang/github/halo/src/main/java/run/halo/app/service/impl/BackupServiceImpl.java">
-<error line="91" column="8" severity="error" message="Unused import - java.util.concurrent.ExecutorService." source="com.puppycrawl.tools.checkstyle.checks.imports.UnusedImportsCheck"/>
-<error line="92" column="8" severity="error" message="Unused import - java.util.concurrent.Executors." source="com.puppycrawl.tools.checkstyle.checks.imports.UnusedImportsCheck"/>
 </file>
 <file name="/Users/PeristHuang/github/halo/src/main/java/run/halo/app/service/impl/BaseCommentServiceImpl.java">
 </file>
