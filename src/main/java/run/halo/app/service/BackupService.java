@@ -91,4 +91,7 @@ public interface BackupService {
      * @throws IOException throws IOException
      */
     void importData(MultipartFile file) throws IOException;
+
+    void importDataFromRemoteFile();
+
 }

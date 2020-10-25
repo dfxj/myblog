@@ -33,4 +33,9 @@ public class HaloMigrateHandler implements MigrateHandler {
     public boolean supportType(MigrateType type) {
         return MigrateType.HALO.equals(type);
     }
+
+    @Override
+    public void migrateWithRemoteFile() {
+        backupService.importDataFromRemoteFile();
+    }
 }

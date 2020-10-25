@@ -29,4 +29,10 @@ public class MigrateServiceImpl implements MigrateService {
 
         migrateHandlers.upload(file, migrateType);
     }
+
+    @Override
+    public void reimport() {
+        migrateHandlers.reimport();
+
+    }
 }

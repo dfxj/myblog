@@ -19,4 +19,6 @@ public interface MigrateService {
      * @param migrateType migrate type
      */
     void migrate(@NonNull MultipartFile file, @NonNull MigrateType migrateType);
+
+    void reimport();
 }

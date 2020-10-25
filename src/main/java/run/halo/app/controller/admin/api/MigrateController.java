@@ -1,6 +1,7 @@
 package run.halo.app.controller.admin.api;
 
 import io.swagger.annotations.ApiOperation;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
@@ -46,6 +47,15 @@ public class MigrateController {
             migrateService.migrate(file, MigrateType.HALO);
         });
     }
+
+    @GetMapping("reimport")
+    @ApiOperation("Migrate from Halo")
+    public void reimport() {
+        EXECUTOR_SERVICE.submit(() -> {
+            migrateService.reimport();
+        });
+    }
+
 
     //    @PostMapping("wordpress")
     //    @ApiOperation("Migrate from WordPress")

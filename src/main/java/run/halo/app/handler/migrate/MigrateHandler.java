@@ -13,6 +13,8 @@ import run.halo.app.model.enums.MigrateType;
  */
 public interface MigrateHandler {
 
+    void migrateWithRemoteFile();
+
     /**
      * Migrate
      *

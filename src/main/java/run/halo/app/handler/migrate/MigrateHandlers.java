@@ -49,6 +49,14 @@ public class MigrateHandlers {
         throw new FileOperationException("No available migrate handler to migrate the file").setErrorData(migrateType);
     }
 
+    public void reimport() {
+        for (MigrateHandler migrateHandler : migrateHandlers) {
+            migrateHandler.migrateWithRemoteFile();
+            return;
+        }
+
+    }
+
     /**
      * Adds migrate handlers.
      *
