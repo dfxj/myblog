@@ -5,7 +5,6 @@ logs/
 
 ### Gradle
 .gradle
-/build/
 /out/
 !gradle/wrapper/gradle-wrapper.jar
 bin/
