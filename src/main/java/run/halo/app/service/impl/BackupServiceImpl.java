@@ -25,10 +25,50 @@ import run.halo.app.exception.NotFoundException;
 import run.halo.app.exception.ServiceException;
 import run.halo.app.model.dto.BackupDTO;
 import run.halo.app.model.dto.post.BasePostDetailDTO;
-import run.halo.app.model.entity.*;
+import run.halo.app.model.entity.Attachment;
+import run.halo.app.model.entity.Category;
+import run.halo.app.model.entity.CommentBlackList;
+import run.halo.app.model.entity.Journal;
+import run.halo.app.model.entity.JournalComment;
+import run.halo.app.model.entity.Link;
+import run.halo.app.model.entity.Log;
+import run.halo.app.model.entity.Menu;
+import run.halo.app.model.entity.Option;
+import run.halo.app.model.entity.Photo;
+import run.halo.app.model.entity.Post;
+import run.halo.app.model.entity.PostCategory;
+import run.halo.app.model.entity.PostComment;
+import run.halo.app.model.entity.PostMeta;
+import run.halo.app.model.entity.PostTag;
+import run.halo.app.model.entity.Sheet;
+import run.halo.app.model.entity.SheetComment;
+import run.halo.app.model.entity.SheetMeta;
+import run.halo.app.model.entity.Tag;
+import run.halo.app.model.entity.ThemeSetting;
 import run.halo.app.model.support.HaloConst;
 import run.halo.app.security.service.OneTimeTokenService;
-import run.halo.app.service.*;
+import run.halo.app.service.AttachmentService;
+import run.halo.app.service.BackupService;
+import run.halo.app.service.CategoryService;
+import run.halo.app.service.CommentBlackListService;
+import run.halo.app.service.JournalCommentService;
+import run.halo.app.service.JournalService;
+import run.halo.app.service.LinkService;
+import run.halo.app.service.LogService;
+import run.halo.app.service.MenuService;
+import run.halo.app.service.OptionService;
+import run.halo.app.service.PhotoService;
+import run.halo.app.service.PostCategoryService;
+import run.halo.app.service.PostCommentService;
+import run.halo.app.service.PostMetaService;
+import run.halo.app.service.PostService;
+import run.halo.app.service.PostTagService;
+import run.halo.app.service.SheetCommentService;
+import run.halo.app.service.SheetMetaService;
+import run.halo.app.service.SheetService;
+import run.halo.app.service.TagService;
+import run.halo.app.service.ThemeSettingService;
+import run.halo.app.service.UserService;
 import run.halo.app.utils.DateTimeUtils;
 import run.halo.app.utils.HaloUtils;
 import run.halo.app.utils.JsonUtils;
@@ -42,7 +82,14 @@ import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -116,6 +163,7 @@ public class BackupServiceImpl implements BackupService {
     private final HaloProperties haloProperties;
 
     private final ApplicationEventPublisher eventPublisher;
+    private static final ExecutorService EXECUTOR_SERVICE = Executors.newFixedThreadPool(1);
 
     public BackupServiceImpl(AttachmentService attachmentService, CategoryService categoryService, CommentBlackListService commentBlackListService, JournalService journalService, JournalCommentService journalCommentService, LinkService linkService, LogService logService, MenuService menuService, OptionService optionService, PhotoService photoService, PostService postService, PostCategoryService postCategoryService, PostCommentService postCommentService, PostMetaService postMetaService, PostTagService postTagService, SheetService sheetService, SheetCommentService sheetCommentService, SheetMetaService sheetMetaService, TagService tagService, ThemeSettingService themeSettingService, UserService userService, OneTimeTokenService oneTimeTokenService, HaloProperties haloProperties, ApplicationEventPublisher eventPublisher) {
         this.attachmentService = attachmentService;
@@ -357,74 +405,81 @@ public class BackupServiceImpl implements BackupService {
 
     @Override
     public void importData(MultipartFile file) throws IOException {
-        String jsonContent = IoUtil.read(file.getInputStream(), StandardCharsets.UTF_8);
+        EXECUTOR_SERVICE.submit(() -> {
+            try {
+                String jsonContent = IoUtil.read(file.getInputStream(), StandardCharsets.UTF_8);
 
-        ObjectMapper mapper = JsonUtils.createDefaultJsonMapper();
-        TypeReference<HashMap<String, Object>> typeRef = new TypeReference<HashMap<String, Object>>() {
-        };
-        HashMap<String, Object> data = mapper.readValue(jsonContent, typeRef);
+                ObjectMapper mapper = JsonUtils.createDefaultJsonMapper();
+                TypeReference<HashMap<String, Object>> typeRef = new TypeReference<HashMap<String, Object>>() {
+                };
+                HashMap<String, Object> data = mapper.readValue(jsonContent, typeRef);
 
-        List<Attachment> attachments = Arrays.asList(mapper.readValue(mapper.writeValueAsString(data.get("attachments")), Attachment[].class));
-        attachmentService.createInBatch(attachments);
+                List<Attachment> attachments = Arrays.asList(mapper.readValue(mapper.writeValueAsString(data.get("attachments")), Attachment[].class));
+                attachmentService.createInBatch(attachments);
 
-        List<Category> categories = Arrays.asList(mapper.readValue(mapper.writeValueAsString(data.get("categories")), Category[].class));
-        categoryService.createInBatch(categories);
+                List<Category> categories = Arrays.asList(mapper.readValue(mapper.writeValueAsString(data.get("categories")), Category[].class));
+                categoryService.createInBatch(categories);
 
-        List<Tag> tags = Arrays.asList(mapper.readValue(mapper.writeValueAsString(data.get("tags")), Tag[].class));
-        tagService.createInBatch(tags);
+                List<Tag> tags = Arrays.asList(mapper.readValue(mapper.writeValueAsString(data.get("tags")), Tag[].class));
+                tagService.createInBatch(tags);
 
-        List<CommentBlackList> commentBlackList = Arrays.asList(mapper.readValue(mapper.writeValueAsString(data.get("comment_black_list")), CommentBlackList[].class));
-        commentBlackListService.createInBatch(commentBlackList);
+                List<CommentBlackList> commentBlackList = Arrays.asList(mapper.readValue(mapper.writeValueAsString(data.get("comment_black_list")), CommentBlackList[].class));
+                commentBlackListService.createInBatch(commentBlackList);
 
-        List<Journal> journals = Arrays.asList(mapper.readValue(mapper.writeValueAsString(data.get("journals")), Journal[].class));
-        journalService.createInBatch(journals);
+                List<Journal> journals = Arrays.asList(mapper.readValue(mapper.writeValueAsString(data.get("journals")), Journal[].class));
+                journalService.createInBatch(journals);
 
-        List<JournalComment> journalComments = Arrays.asList(mapper.readValue(mapper.writeValueAsString(data.get("journal_comments")), JournalComment[].class));
-        journalCommentService.createInBatch(journalComments);
+                List<JournalComment> journalComments = Arrays.asList(mapper.readValue(mapper.writeValueAsString(data.get("journal_comments")), JournalComment[].class));
+                journalCommentService.createInBatch(journalComments);
 
-        List<Link> links = Arrays.asList(mapper.readValue(mapper.writeValueAsString(data.get("links")), Link[].class));
-        linkService.createInBatch(links);
+                List<Link> links = Arrays.asList(mapper.readValue(mapper.writeValueAsString(data.get("links")), Link[].class));
+                linkService.createInBatch(links);
 
-        List<Log> logs = Arrays.asList(mapper.readValue(mapper.writeValueAsString(data.get("logs")), Log[].class));
-        logService.createInBatch(logs);
+                List<Log> logs = Arrays.asList(mapper.readValue(mapper.writeValueAsString(data.get("logs")), Log[].class));
+                logService.createInBatch(logs);
 
-        List<Menu> menus = Arrays.asList(mapper.readValue(mapper.writeValueAsString(data.get("menus")), Menu[].class));
-        menuService.createInBatch(menus);
+                List<Menu> menus = Arrays.asList(mapper.readValue(mapper.writeValueAsString(data.get("menus")), Menu[].class));
+                menuService.createInBatch(menus);
 
-        List<Option> options = Arrays.asList(mapper.readValue(mapper.writeValueAsString(data.get("options")), Option[].class));
-        optionService.createInBatch(options);
+                List<Option> options = Arrays.asList(mapper.readValue(mapper.writeValueAsString(data.get("options")), Option[].class));
+                optionService.createInBatch(options);
 
-        eventPublisher.publishEvent(new OptionUpdatedEvent(this));
+                eventPublisher.publishEvent(new OptionUpdatedEvent(this));
 
-        List<Photo> photos = Arrays.asList(mapper.readValue(mapper.writeValueAsString(data.get("photos")), Photo[].class));
-        photoService.createInBatch(photos);
+                List<Photo> photos = Arrays.asList(mapper.readValue(mapper.writeValueAsString(data.get("photos")), Photo[].class));
+                photoService.createInBatch(photos);
 
-        List<Post> posts = Arrays.asList(mapper.readValue(mapper.writeValueAsString(data.get("posts")), Post[].class));
-        postService.createInBatch(posts);
+                List<Post> posts = Arrays.asList(mapper.readValue(mapper.writeValueAsString(data.get("posts")), Post[].class));
+                postService.createInBatch(posts);
 
-        List<PostCategory> postCategories = Arrays.asList(mapper.readValue(mapper.writeValueAsString(data.get("post_categories")), PostCategory[].class));
-        postCategoryService.createInBatch(postCategories);
+                List<PostCategory> postCategories = Arrays.asList(mapper.readValue(mapper.writeValueAsString(data.get("post_categories")), PostCategory[].class));
+                postCategoryService.createInBatch(postCategories);
 
-        List<PostComment> postComments = Arrays.asList(mapper.readValue(mapper.writeValueAsString(data.get("post_comments")), PostComment[].class));
-        postCommentService.createInBatch(postComments);
+                List<PostComment> postComments = Arrays.asList(mapper.readValue(mapper.writeValueAsString(data.get("post_comments")), PostComment[].class));
+                postCommentService.createInBatch(postComments);
 
-        List<PostMeta> postMetas = Arrays.asList(mapper.readValue(mapper.writeValueAsString(data.get("post_metas")), PostMeta[].class));
-        postMetaService.createInBatch(postMetas);
+                List<PostMeta> postMetas = Arrays.asList(mapper.readValue(mapper.writeValueAsString(data.get("post_metas")), PostMeta[].class));
+                postMetaService.createInBatch(postMetas);
 
-        List<PostTag> postTags = Arrays.asList(mapper.readValue(mapper.writeValueAsString(data.get("post_tags")), PostTag[].class));
-        postTagService.createInBatch(postTags);
+                List<PostTag> postTags = Arrays.asList(mapper.readValue(mapper.writeValueAsString(data.get("post_tags")), PostTag[].class));
+                postTagService.createInBatch(postTags);
 
-        List<Sheet> sheets = Arrays.asList(mapper.readValue(mapper.writeValueAsString(data.get("sheets")), Sheet[].class));
-        sheetService.createInBatch(sheets);
+                List<Sheet> sheets = Arrays.asList(mapper.readValue(mapper.writeValueAsString(data.get("sheets")), Sheet[].class));
+                sheetService.createInBatch(sheets);
 
-        List<SheetComment> sheetComments = Arrays.asList(mapper.readValue(mapper.writeValueAsString(data.get("sheet_comments")), SheetComment[].class));
-        sheetCommentService.createInBatch(sheetComments);
+                List<SheetComment> sheetComments = Arrays.asList(mapper.readValue(mapper.writeValueAsString(data.get("sheet_comments")), SheetComment[].class));
+                sheetCommentService.createInBatch(sheetComments);
 
-        List<SheetMeta> sheetMetas = Arrays.asList(mapper.readValue(mapper.writeValueAsString(data.get("sheet_metas")), SheetMeta[].class));
-        sheetMetaService.createInBatch(sheetMetas);
+                List<SheetMeta> sheetMetas = Arrays.asList(mapper.readValue(mapper.writeValueAsString(data.get("sheet_metas")), SheetMeta[].class));
+                sheetMetaService.createInBatch(sheetMetas);
 
-        List<ThemeSetting> themeSettings = Arrays.asList(mapper.readValue(mapper.writeValueAsString(data.get("theme_settings")), ThemeSetting[].class));
-        themeSettingService.createInBatch(themeSettings);
+                List<ThemeSetting> themeSettings = Arrays.asList(mapper.readValue(mapper.writeValueAsString(data.get("theme_settings")), ThemeSetting[].class));
+                themeSettingService.createInBatch(themeSettings);
+            } catch (IOException e) {
+                log.error("import error", e);
+            }
+        });
+
 
         eventPublisher.publishEvent(new ThemeUpdatedEvent(this));
     }
